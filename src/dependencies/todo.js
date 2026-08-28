@@ -67,6 +67,6 @@ class toDoItem {
     }
 }
 
-const createToDoItem = function(title, description, dueDate, priority, project) {
+const createToDoItem = function(title, description, dueDate, priority, project = null) {
     return new toDoItem(title, description, dueDate, priority, project);
 }
