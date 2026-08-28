@@ -1,76 +1,79 @@
+import { projectExists } from "./project.js";
+
 class toDoItem {
-    constructor(title, description, dueDate, priority, checked, project = null) {
+    constructor(title, description, dueDate, priority, checked = false, project = null) {
         this.id = crypto.randomUUID();
-        this.title = title;
-        this.description = description;
-        this.dueDate = dueDate;
-        this.priority = priority;
-        this.checked = checked;
-        this.project = project;
+        this._title = title;
+        this._description = description;
+        this._dueDate = dueDate;
+        this._priority = priority;
+        this._checked = checked;
+        this._project = project;
     }
 
-    // GETTERS/SETTERS
+    // GETTERS / SETTERS
     get title() {
-        return this.title;
+        return this._title;
     }
 
     set title(value) {
-        this.title = value;
+        this._title = value;
     }
 
     get description() {
-        return this.description;
+        return this._description;
     }
 
     set description(value) {
-        this.description = value;
+        this._description = value;
     }
 
     get dueDate() {
-        return this.dueDate;
+        return this._dueDate;
     }
 
     set dueDate(value) {
-        this.dueDate = value;
+        this._dueDate = value;
     }
 
     get priority() {
-        return this.priority;
+        return this._priority;
     }
 
     set priority(value) {
-        this.priority = value;
+        this._priority = value;
     }
 
     get checked() {
-        return this.checked;
+        return this._checked;
     }
 
     set checked(value) {
-        if (value !== true || value !== false){
-            throw new Error(`Checked must be either true or false. Received ${value}.`)
+        if (typeof value !== "boolean") {
+            throw new Error(`Checked must be either true or false. Received ${value}.`);
         }
-        this.checked = value;
+        this._checked = value;
     }
 
     get project() {
-        return this.project;
+        return this._project;
     }
 
     set project(value) {
-        this.project = value;
+        if (value !== null || !projectExists(value) ){
+            throw new Error(`Project ${value} does not exist.`)
+        }
+        this._project = value;
     }
 
     // METHODS
     switchChecked() {
-        this.checked = false ? this.checked : true;
+        this.checked = !this.checked;
     }
 }
 
-const createToDoItem = function(title, description, dueDate, priority, project = null) {
-    return new toDoItem(title, description, dueDate, priority, project);
+const createToDoItem = function(title, description, dueDate, priority, checked = false, project = null) {
+    return new toDoItem(title, description, dueDate, priority, checked, project);
 }
 
-const newToDOItem = createToDoItem("title", "description", "tomorrow", 1);
-
-export {toDoItem, createToDoItem, newToDOItem}
+export { toDoItem, createToDoItem }
