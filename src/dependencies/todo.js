@@ -1,17 +1,24 @@
 import { projectExists } from "./project.js";
 
-class toDoItem {
+// temporary storage for ToDoItems
+const TODOS = []
+
+class ToDoItem {
     constructor(title, description, dueDate, priority, checked = false, project = null) {
         this.id = crypto.randomUUID();
-        this._title = title;
-        this._description = description;
-        this._dueDate = dueDate;
-        this._priority = priority;
-        this._checked = checked;
-        this._project = project;
+        this.title = title;
+        this.description = description;
+        this.dueDate = dueDate;
+        this.priority = priority;
+        this.checked = checked;
+        this.project = project;
     }
 
     // GETTERS / SETTERS
+    get id() {
+        return this.id;
+    }
+
     get title() {
         return this._title;
     }
@@ -67,14 +74,33 @@ class toDoItem {
         this._project = value;
     }
 
-    // METHODS
+    // CLASS METHODS
     switchChecked() {
         this.checked = !this.checked;
     }
+
+    // STATIC METHODS
+    static create(title, description, dueDate, priority, checked = false, project = null) {
+        return new this(title, description, dueDate, priority, checked, project);
+    }
 }
 
-const createToDoItem = function(title, description, dueDate, priority, checked = false, project = null) {
-    return new toDoItem(title, description, dueDate, priority, checked, project);
+const addToDo = function(title, description, dueDate, priority, checked = false, project = null) {
+    TODOS.push(ToDoItem.create(title, description, dueDate, priority, checked, project));
 }
 
-export { toDoItem, createToDoItem }
+const deleteToDo = function(id) {
+    const toDoInd = TODOS.findIndex((td) => td.id === id);
+    TODOS.splice(toDoInd, 1);
+}
+
+const getToDo = function(id) {
+    return TODOS.find((td) => td.id === id);
+}
+
+const getToDoItemsByProject = function(name) {
+    const toDoItemsByProject = TODOS.filter((td) => td.project === name);
+    return toDoItemsByProject;
+}
+
+export { ToDoItem, addToDo, deleteToDo, getToDoItemsByProject, TODOS }

@@ -2,7 +2,7 @@ const PROJECTS = [];
 
 class ProjectItem {
     constructor(name) {
-        this._name = name;
+        this.name = name;
     }
 
     // GETTERS/SETTERS
@@ -11,19 +11,30 @@ class ProjectItem {
     }
 
     set name(value) {
+        if (projectExists(value)) {
+            throw new Error(`The project ${value} already exists. There can't be two projects with the same name.`)
+        }
         this._name = value;
+    }
+
+    // STATIC METHODS
+    static create(name){
+        return new this(name);
     }
 }
 
-const createProjectItem = function(name) {
-    const pj = new ProjectItem(name);
-    PROJECTS.push(pj);
+const addProject = function(name) {
+    PROJECTS.push(ProjectItem.create(name));
+}
+
+const getProject = function(name) {
+    return PROJECTS.find((p) => p.name === name);
 }
 
 const projectExists = function(name) {
-    console.log(name);
-    console.log(PROJECTS.find((p) => p.name === name));
-    return PROJECTS.find((p) => p.name === name) !== undefined;
+    return getProject(name) !== undefined;
 }
 
-export { ProjectItem, createProjectItem, projectExists, PROJECTS }
+
+
+export { ProjectItem, addProject, getProject, projectExists, PROJECTS }
