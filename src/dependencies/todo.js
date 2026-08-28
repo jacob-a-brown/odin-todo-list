@@ -1,5 +1,5 @@
 class toDoItem {
-    constructor(title, description, dueDate, priority, checked, project) {
+    constructor(title, description, dueDate, priority, checked, project = null) {
         this.id = crypto.randomUUID();
         this.title = title;
         this.description = description;
@@ -67,6 +67,6 @@ class toDoItem {
     }
 }
 
-const createToDoItem = function(title, description, dueDate, priority) {
-    return new toDoItem(title, description, dueDate, priority);
+const createToDoItem = function(title, description, dueDate, priority, project) {
+    return new toDoItem(title, description, dueDate, priority, project);
 }
