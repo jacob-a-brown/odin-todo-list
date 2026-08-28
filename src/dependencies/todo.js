@@ -60,7 +60,8 @@ class toDoItem {
     }
 
     set project(value) {
-        if (value !== null || !projectExists(value) ){
+        console.log(value);
+        if (value !== null && !projectExists(value) ){
             throw new Error(`Project ${value} does not exist.`)
         }
         this._project = value;

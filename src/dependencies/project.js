@@ -21,6 +21,7 @@ const createProjectItem = function(name) {
 }
 
 const projectExists = function(name) {
+    console.log(name);
     console.log(PROJECTS.find((p) => p.name === name));
     return PROJECTS.find((p) => p.name === name) !== undefined;
 }
