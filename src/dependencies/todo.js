@@ -5,7 +5,7 @@ const TODOS = []
 
 class ToDoItem {
     constructor(title, description, dueDate, priority, checked = false, project = null) {
-        this.id = crypto.randomUUID();
+        this._id = crypto.randomUUID();
         this.title = title;
         this.description = description;
         this.dueDate = dueDate;
@@ -16,7 +16,7 @@ class ToDoItem {
 
     // GETTERS / SETTERS
     get id() {
-        return this.id;
+        return this._id;
     }
 
     get title() {
@@ -67,7 +67,6 @@ class ToDoItem {
     }
 
     set project(value) {
-        console.log(value);
         if (value !== null && !projectExists(value) ){
             throw new Error(`Project ${value} does not exist.`)
         }
@@ -103,4 +102,4 @@ const getToDoItemsByProject = function(name) {
     return toDoItemsByProject;
 }
 
-export { ToDoItem, addToDo, deleteToDo, getToDoItemsByProject, TODOS }
+export { ToDoItem, addToDo, deleteToDo, getToDo, getToDoItemsByProject, TODOS }
