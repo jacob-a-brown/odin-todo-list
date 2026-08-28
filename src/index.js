@@ -1,1 +1,3 @@
-console.log("I am loading!");
+import * as toDo from "./dependencies/todo.js";
+
+console.log(toDo.newToDOItem);

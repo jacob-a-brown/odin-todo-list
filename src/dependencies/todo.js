@@ -70,3 +70,7 @@ class toDoItem {
 const createToDoItem = function(title, description, dueDate, priority, project = null) {
     return new toDoItem(title, description, dueDate, priority, project);
 }
+
+const newToDOItem = createToDoItem("title", "description", "tomorrow", 1);
+
+export {toDoItem, createToDoItem, newToDOItem}
