@@ -1,11 +1,12 @@
 class toDoItem {
-    constructor(title, description, dueDate, priority, checked) {
+    constructor(title, description, dueDate, priority, checked, project) {
         this.id = crypto.randomUUID();
         this.title = title;
         this.description = description;
         this.dueDate = dueDate;
         this.priority = priority;
         this.checked = checked;
+        this.project = project;
     }
 
     // GETTERS/SETTERS
@@ -50,6 +51,14 @@ class toDoItem {
             throw new Error(`Checked must be either true or false. Received ${value}.`)
         }
         this.checked = value;
+    }
+
+    get project() {
+        return this.project;
+    }
+
+    set project(value) {
+        this.project = value;
     }
 
     // METHODS
