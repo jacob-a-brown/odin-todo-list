@@ -5,13 +5,18 @@ const content = document.querySelector(".content");
 
 const populateToDos = (function () {
     const displayAll = function () {
+        console.log(TODOS, "333");
         TODOS.forEach((item) => {
             const toDoNode = document.createElement("p");
             toDoNode.className = "to-do-item";
             toDoNode.id = item.id;
             toDoNode.textContent = item.title;
-            content.addChild(toDoNode);
+            content.appendChild(toDoNode);
         })
+    }
+
+    return {
+        displayAll,
     }
 })();
 
