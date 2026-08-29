@@ -6,6 +6,7 @@ const content = document.querySelector(".content");
 const populateToDos = (function () {
     const displayAll = function () {
         console.log(TODOS, "333");
+        console.log(content);
         TODOS.forEach((item) => {
             const toDoNode = document.createElement("p");
             toDoNode.className = "to-do-item";
