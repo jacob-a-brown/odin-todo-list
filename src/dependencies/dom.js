@@ -8,9 +8,9 @@ const projectContainer = document.querySelector(".project-container");
 const populateToDos = (function () {
     const clearDisplay = function() {
         todoContainer.replaceChildren();
-        const todoHeader = document.createElement("h1");
-        todoHeader.textContent = "Todos";
-        todoContainer.appendChild(todoHeader);
+        const todoTitle = document.createElement("h1");
+        todoTitle.textContent = "Todos";
+        todoContainer.appendChild(todoTitle);
     }
 
     const displayByFilter = function(filterParam = null, filterValue = null) {
@@ -35,19 +35,27 @@ const populateToDos = (function () {
             checkedButton.name = item.id;
             checkedButton.checked = item.checked;
 
-            const toDoNode = document.createElement("p");
-            toDoNode.className = "to-do-item";
-            toDoNode.id = item.id;
-            toDoNode.textContent = `${item.title} | project is ${item.project} | checked is ${item.checked}`;
+            const todoTitle = document.createElement("h3");
+            todoTitle.className = "todo-title";
+            todoTitle.textContent = item.title;
+
+            const todoDescription = document.createElement("p");
+            todoDescription.className = "todo-description";
+            todoDescription.textContent = item.description;
+
+            const todoDate = document.createElement("p");
+            todoDate.className = "todo-date";
+            todoDate.textContent = item.dueDate;
 
             checkedButton.addEventListener("click", function(){
                 item.checked = !item.checked;
                 checkedButton.checked = item.checked;
-                toDoNode.textContent = `${item.title} | project is ${item.project} | checked is ${item.checked}`;
             })
 
             toDoDiv.appendChild(checkedButton);
-            toDoDiv.appendChild(toDoNode);
+            toDoDiv.appendChild(todoTitle);
+            toDoDiv.appendChild(todoDescription);
+            toDoDiv.appendChild(todoDate);
             todoContainer.appendChild(toDoDiv);
         })    
     }

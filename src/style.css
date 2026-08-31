@@ -1,3 +1,9 @@
+*, body {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
 .container {
     height: 100vh;
     width: 100%;
@@ -12,12 +18,42 @@
 
 .todo-container {
     grid-column: 2 / 3;
+    display: grid;
+    gap: 10px;
 }
 
 .todo-div {
-    display: flex;
-    justify-content: flex-start;
-    align-content: center;
+    height: 100px;
+    width: 600px;
+    display: grid;
+    grid-template-columns: 1fr 3fr 2fr;
+    grid-template-rows: repeat(3, 1fr);
+    border: 1px solid black;
+    border-radius: 15px;
+    align-items: center;
+    justify-items: center;
+}
+
+.todo-checkbox {
+    grid-column: 1 / 2;
+    grid-row: 1 / -1;
+    height: 20%;
+    width: 20%;
+}
+
+.todo-title {
+    grid-column: 2 / 3;
+    grid-row: 1 / 2;
+}
+
+.todo-description {
+    grid-column: 2 / 3;
+    grid-row: 2 / 3;
+}
+
+.todo-date {
+    grid-column: 2 / 3;
+    grid-row: 3 / 4;
 }
 
 .project-div {
