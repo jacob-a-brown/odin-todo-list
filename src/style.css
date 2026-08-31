@@ -19,3 +19,9 @@
     justify-content: flex-start;
     align-content: center;
 }
+
+.project-div {
+    display: flex;
+    justify-content: flex-start;
+    align-content: center;
+}

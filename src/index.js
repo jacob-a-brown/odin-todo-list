@@ -8,4 +8,4 @@ project.addProject("not false");
 toDo.addToDo("title 2", "description 2", "dueDate 2", 2, true, "not false");
 
 dom.populateToDos.displayAll();
-dom.populateProjects.displayAll();
+dom.populateProjects.display();

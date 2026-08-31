@@ -8,12 +8,22 @@ const projectContainer = document.querySelector(".project-container");
 const populateToDos = (function () {
     const clearDisplay = function() {
         todoContainer.replaceChildren();
+        const todoHeader = document.createElement("h1");
+        todoHeader.textContent = "Todos";
+        todoContainer.appendChild(todoHeader);
     }
 
-    const displayAll = function () {
-        clearDisplay();
+    const displayByFilter = function(filterParam = null, filterValue = null) {
+        clearDisplay()
+        let filteredToDos;
 
-        TODOS.forEach((item) => {
+        if (filterParam === null) {
+            filteredToDos = TODOS;
+        } else if (filterParam === "project"){
+            filteredToDos = TODOS.filter((elem) => elem.project === filterValue);
+        }
+
+        filteredToDos.forEach((item) => {
             const toDoDiv = document.createElement("div");
             toDoDiv.className = "todo-div";
             toDoDiv.id = `todo-div-${item.id}`;
@@ -28,12 +38,12 @@ const populateToDos = (function () {
             const toDoNode = document.createElement("p");
             toDoNode.className = "to-do-item";
             toDoNode.id = item.id;
-            toDoNode.textContent = `${item.title} and checked is ${item.checked}`;
+            toDoNode.textContent = `${item.title} and project is ${item.project} checked is ${item.checked}`;
 
             checkedButton.addEventListener("click", function(){
                 item.checked = !item.checked;
                 checkedButton.checked = item.checked;
-                toDoNode.textContent = `${item.title} and checked is ${item.checked}`;
+                toDoNode.textContent = `${item.title} and project is ${item.project} checked is ${item.checked}`;
             })
 
             toDoDiv.appendChild(checkedButton);
@@ -41,19 +51,14 @@ const populateToDos = (function () {
             todoContainer.appendChild(toDoDiv);
         })    
     }
+    
+
+    const displayAll = function () {
+         displayByFilter();
+    }
 
     const displayByProject = function (projectName) {
-        clearDisplay()
-
-        const projectToDos = TODOS.filter((elem) => elem.project === projectName);
-
-        projectToDos.forEach((item) => {
-            const toDoNode = document.createElement("p");
-            toDoNode.className = "to-do-item";
-            toDoNode.id = item.id;
-            toDoNode.textContent = item.title;
-            todoContainer.appendChild(toDoNode);
-        })
+        displayByFilter("project", projectName)
     }    
 
     return {
@@ -64,18 +69,61 @@ const populateToDos = (function () {
 
 const populateProjects = (function() {
 
-    const displayAll = function() {
+    const display = function() {
+        // have an option to display all projects
+        const projectDiv = document.createElement("div");
+        projectDiv.className = "project-div";
+
+        const radioButton = document.createElement("input");
+        radioButton.type = "radio";
+        radioButton.name = "project";
+        radioButton.value = "";
+        radioButton.id = "radio-none";
+        radioButton.checked = true;
+        
+        const allProjects = document.createElement("label");
+        allProjects.className = "project-item";
+        allProjects.id = "all-projects";
+        allProjects.textContent = "All";
+        allProjects.htmlFor = "radio-none";
+
+        radioButton.addEventListener("change", function(event) {
+            populateToDos.displayAll();
+        })
+
+        projectDiv.appendChild(radioButton);
+        projectDiv.appendChild(allProjects);
+
+        projectContainer.appendChild(projectDiv);
+
+        // show each project
         PROJECTS.forEach(function(item) {
-            const projectNode = document.createElement("p");
+            const projectDiv = document.createElement("div");
+            projectDiv.className = "project-div";
+
+            const radioButton = document.createElement("input");
+            radioButton.type = "radio";
+            radioButton.name = "project";
+            radioButton.value = item.name;
+            radioButton.id = item.id;
+
+            const projectNode = document.createElement("label");
             projectNode.className = "project-item";
-            projectNode.id = item.id;
             projectNode.textContent = item.name;
-            projectContainer.appendChild(projectNode);
+            projectNode.htmlFor = item.id;
+
+            radioButton.addEventListener("change", function(event) {
+                populateToDos.displayByProject(event.target.value);
+            })
+
+            projectDiv.appendChild(radioButton);
+            projectDiv.appendChild(projectNode);
+            projectContainer.appendChild(projectDiv);
         })
     }
 
     return {
-        displayAll
+        display
     }
 
 })();
