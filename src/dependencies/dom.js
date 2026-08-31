@@ -38,12 +38,12 @@ const populateToDos = (function () {
             const toDoNode = document.createElement("p");
             toDoNode.className = "to-do-item";
             toDoNode.id = item.id;
-            toDoNode.textContent = `${item.title} and project is ${item.project} checked is ${item.checked}`;
+            toDoNode.textContent = `${item.title} | project is ${item.project} | checked is ${item.checked}`;
 
             checkedButton.addEventListener("click", function(){
                 item.checked = !item.checked;
                 checkedButton.checked = item.checked;
-                toDoNode.textContent = `${item.title} and project is ${item.project} checked is ${item.checked}`;
+                toDoNode.textContent = `${item.title} | project is ${item.project} | checked is ${item.checked}`;
             })
 
             toDoDiv.appendChild(checkedButton);
@@ -93,8 +93,10 @@ const populateProjects = (function() {
 
         projectDiv.appendChild(radioButton);
         projectDiv.appendChild(allProjects);
-
         projectContainer.appendChild(projectDiv);
+
+        // start by displaying all
+        populateToDos.displayAll();
 
         // show each project
         PROJECTS.forEach(function(item) {
