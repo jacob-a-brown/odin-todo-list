@@ -36,10 +36,15 @@ const getProject = function(name) {
     return PROJECTS.find((p) => p.name === name);
 }
 
+const getAllProjectNames = function() {
+    const allProjectNames = PROJECTS.map((p) => p.name);
+    return allProjectNames;
+}
+
 const projectExists = function(name) {
     return getProject(name) !== undefined;
 }
 
 
 
-export { ProjectItem, addProject, getProject, projectExists, PROJECTS }
+export { ProjectItem, addProject, getProject, getAllProjectNames, projectExists, PROJECTS }

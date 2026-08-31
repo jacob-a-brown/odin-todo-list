@@ -1,6 +1,6 @@
 // module to manipulate the DOM
 import { TODOS, deleteToDo } from "./todo.js";
-import { PROJECTS } from "./project.js";
+import { PROJECTS, getAllProjectNames } from "./project.js";
 
 function createSVGIcon(path, className) {
     const svgIcon = document.createElementNS("http://www.w3.org/2000/svg", "svg");
@@ -13,6 +13,19 @@ function createSVGIcon(path, className) {
     svgIcon.appendChild(svgPath);
 
     return svgIcon;
+}
+
+function createEditFormLine(_textContent, _id, _defaultValue) {
+    const editLabel = document.createElement("label");
+    editLabel.textContent = `${_textContent}: `;
+    
+    const editInput = document.createElement("input");
+    editInput.id = _id;
+    editInput.type = "text";
+    editInput.value = _defaultValue;
+    editLabel.appendChild(editInput);
+
+    return editLabel;
 }
 
 const todoContainer = document.querySelector(".todo-container");
@@ -68,10 +81,99 @@ const populateToDos = (function () {
                 checkedButton.checked = item.checked;
             })
 
+            // the following event listeners alter the state of the item so need to refresh the display
+            todoEdit.addEventListener("click", function() {
+                // create new dialog with form to submit new information
+                // information should be pre-populated
+                const editDialog = document.createElement("div");
+                editDialog.className = "edit-dialog";
+
+                const editForm = document.createElement("form");
+                editForm.id = `edit-form-${item.id}`;
+                
+                const titleEditLine = createEditFormLine("Title", "edit-title", item.title)
+                const descriptionEditLine = createEditFormLine("Description", "edit-description", item.description);
+                const dueDateEditLine = createEditFormLine("Due Date", "edit-due-date", item.dueDate);
+                
+                const editCheckedLabel = document.createElement("label");
+                editCheckedLabel.textContent = "Done: ";
+                const editChecked = document.createElement("input");
+                editChecked.type = "checkbox";
+                editChecked.checked = item.checked;
+                editChecked.id = "edit-checked";
+                editCheckedLabel.appendChild(editChecked);
+
+
+                const projectEditLabel = document.createElement("label");
+                const projectEditSelect = document.createElement("select");
+                projectEditLabel.textContent = "Project: "
+                projectEditSelect.id = "edit-project";
+
+                // add a null option for projects
+                const nullOption = document.createElement("option");
+                nullOption.value = "null";
+                nullOption.text = "None";
+                projectEditSelect.appendChild(nullOption);
+
+                const projectOptions = getAllProjectNames();
+                projectOptions.forEach(p => {
+                    const option = document.createElement("option");
+                    option.value = p;
+                    option.text = p;
+                    projectEditSelect.appendChild(option);
+                })
+                projectEditLabel.appendChild(projectEditSelect);
+
+                editForm.appendChild(titleEditLine);
+                editForm.appendChild(descriptionEditLine);
+                editForm.appendChild(dueDateEditLine);
+                editForm.appendChild(editCheckedLabel);
+                editForm.appendChild(projectEditLabel);
+
+                // create submit button
+                const submitButton = document.createElement("button");
+                submitButton.textContent = "Submit";
+                submitButton.type = "submit";
+                submitButton.setAttribute("form", editForm.id);
+
+                editForm.addEventListener("submit", function(e){
+                    e.preventDefault();
+
+                    const titleInput = document.getElementById("edit-title");
+                    const descriptionInput = document.getElementById("edit-description");
+                    const dueDateInput = document.getElementById("edit-due-date");
+                    const checkedInput = document.getElementById("edit-checked");
+                    const projectInput = document.getElementById("edit-project");
+
+                    item.title = titleInput.value;
+                    item.description = descriptionInput.value;
+                    item.dueDate = dueDateInput.value;
+                    item.checked = checkedInput.checked;
+                    item.project = projectInput.value === "null" ? null : projectInput.value;
+
+                    editDialog.remove();
+                    displayByFilter(filterParam, filterValue);
+
+                })
+
+                // Create close button
+                const closeBtn = document.createElement("button");
+                closeBtn.textContent = "Close";
+                closeBtn.addEventListener("click", function() {
+                    editDialog.remove();
+                });
+
+                editDialog.appendChild(editForm);
+                editDialog.appendChild(submitButton);
+                editDialog.appendChild(closeBtn);
+                todoContainer.appendChild(editDialog);
+            });
+
+
             todoDelete.addEventListener("click", function() {
                 deleteToDo(item.id);
                 displayByFilter(filterParam, filterValue);
-            })
+            });
 
             toDoDiv.appendChild(checkedButton);
             toDoDiv.appendChild(todoTitle);
@@ -83,7 +185,6 @@ const populateToDos = (function () {
         })    
     }
     
-
     const displayAll = function () {
          displayByFilter();
     }
