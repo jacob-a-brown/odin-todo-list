@@ -135,6 +135,16 @@ const populateToDos = (function () {
                 submitButton.textContent = "Submit";
                 submitButton.type = "submit";
                 submitButton.setAttribute("form", editForm.id);
+                editForm.appendChild(submitButton);
+
+                // Create close button
+                const closeBtn = document.createElement("button");
+                closeBtn.textContent = "Close";
+                closeBtn.type = "button";
+                closeBtn.addEventListener("click", function() {
+                    editDialog.remove();
+                });
+                editForm.appendChild(closeBtn);
 
                 editForm.addEventListener("submit", function(e){
                     e.preventDefault();
@@ -153,19 +163,9 @@ const populateToDos = (function () {
 
                     editDialog.remove();
                     displayByFilter(filterParam, filterValue);
-
                 })
 
-                // Create close button
-                const closeBtn = document.createElement("button");
-                closeBtn.textContent = "Close";
-                closeBtn.addEventListener("click", function() {
-                    editDialog.remove();
-                });
-
                 editDialog.appendChild(editForm);
-                editDialog.appendChild(submitButton);
-                editDialog.appendChild(closeBtn);
                 todoContainer.appendChild(editDialog);
             });
 
