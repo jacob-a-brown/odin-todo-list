@@ -2,10 +2,15 @@ const PROJECTS = [];
 
 class ProjectItem {
     constructor(name) {
+        this._id = crypto.randomUUID();
         this.name = name;
     }
 
     // GETTERS/SETTERS
+    get id() {
+        return this._id;
+    }
+
     get name() {
         return this._name;
     }
