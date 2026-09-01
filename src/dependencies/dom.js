@@ -161,7 +161,7 @@ const populateToDos = (function () {
         return dialogDiv;
     }
 
-    const displayByFilter = function(filterParam = null, filterValue = null) {
+    const displayByFilter = function(filterParam = "all", filterValue = null) {
         clearDisplay()
         const todoTitle = document.createElement("h1");
         todoTitle.textContent = "Todos";
@@ -179,7 +179,7 @@ const populateToDos = (function () {
 
         let filteredToDos;
 
-        if (filterParam === null) {
+        if (filterParam === "all") {
             filteredToDos = TODOS;
         } else if (filterParam === "project"){
             filteredToDos = TODOS.filter((elem) => elem.project === filterValue);
@@ -341,8 +341,8 @@ const populateProjects = (function() {
         projectContainer.appendChild(projectTitle);
 
         // have an option to display all projects
-        const projectDiv = document.createElement("div");
-        projectDiv.className = "project-div";
+        const allProjectDiv = document.createElement("div");
+        allProjectDiv.className = "project-div";
 
         const addProjectButton = document.createElement("button");
         addProjectButton.textContent = "Create Project";
@@ -353,26 +353,50 @@ const populateProjects = (function() {
             document.body.appendChild(addProjectDialog);
         })
 
-        const radioButton = document.createElement("input");
-        radioButton.type = "radio";
-        radioButton.name = "project";
-        radioButton.value = "";
-        radioButton.id = "radio-none";
-        radioButton.checked = true;
+        const allRadioButton = document.createElement("input");
+        allRadioButton.type = "radio";
+        allRadioButton.name = "project";
+        allRadioButton.value = "";
+        allRadioButton.id = "radio-all";
+        allRadioButton.checked = true;
         
         const allProjects = document.createElement("label");
         allProjects.className = "project-item";
         allProjects.id = "all-projects";
         allProjects.textContent = "All";
-        allProjects.htmlFor = "radio-none";
+        allProjects.htmlFor = "radio-all";
 
-        radioButton.addEventListener("change", function(event) {
+        allRadioButton.addEventListener("change", function(event) {
             populateToDos.displayAll();
         })
 
-        projectDiv.appendChild(radioButton);
-        projectDiv.appendChild(allProjects);
-        projectContainer.appendChild(projectDiv);
+        allProjectDiv.appendChild(allRadioButton);
+        allProjectDiv.appendChild(allProjects);
+        projectContainer.appendChild(allProjectDiv);
+
+        const nullProjectDiv = document.createElement("div");
+        nullProjectDiv.className = "project-div";
+
+        const nullRadioButton = document.createElement("input");
+        nullRadioButton.type = "radio";
+        nullRadioButton.name = "project";
+        nullRadioButton.value = "";
+        nullRadioButton.id = "radio-none";
+        nullRadioButton.checked = false;
+        
+        const nullProjects = document.createElement("label");
+        nullProjects.className = "project-item";
+        nullProjects.id = "null-projects";
+        nullProjects.textContent = "None";
+        nullProjects.htmlFor = "radio-none";
+
+        nullRadioButton.addEventListener("change", function(event) {
+            populateToDos.displayByProject(null);
+        })
+
+        nullProjectDiv.appendChild(nullRadioButton);
+        nullProjectDiv.appendChild(nullProjects);
+        projectContainer.appendChild(nullProjectDiv);
 
         // start by displaying all
         populateToDos.displayAll();
