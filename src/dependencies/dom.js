@@ -1,6 +1,6 @@
 // module to manipulate the DOM
 import { TODOS, addToDo, deleteToDo } from "./todo.js";
-import { PROJECTS, addProject, getAllProjectNames } from "./project.js";
+import { PROJECTS, addProject, getAllProjectNames, projectExists } from "./project.js";
 
 function createAddEditFormLine(_textContent, _id, _defaultValue) {
         const addEditLabel = document.createElement("label");
@@ -277,7 +277,7 @@ const populateProjects = (function() {
         addEditHeader.textContent = "Create a new project";
         addEditForm.appendChild(addEditHeader);
 
-        const nameLine = createAddEditFormLine("Name: ", "add-edit-name", "");
+        const nameLine = createAddEditFormLine("Name", "add-edit-name", "");
         addEditForm.appendChild(nameLine);
 
         const buttonDiv = document.createElement("div");
@@ -294,10 +294,18 @@ const populateProjects = (function() {
             e.preventDefault();
 
             const nameInput = document.getElementById("add-edit-name");
-            addProject(nameInput.value);
 
-            dialogDiv.remove();
-            display();
+            if (projectExists(nameInput.value)){
+                nameInput.setCustomValidity(`Project ${nameInput.value} already exists. Choose a new name.`);
+                nameInput.reportValidity();
+            } else {
+                nameInput.setCustomValidity("");
+                addProject(nameInput.value);
+                dialogDiv.remove();
+                display();
+            }
+
+            
         });
 
         // Create close button
