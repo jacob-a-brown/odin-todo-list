@@ -1,6 +1,19 @@
 // module to manipulate the DOM
 import { TODOS, addToDo, deleteToDo } from "./todo.js";
-import { PROJECTS, getAllProjectNames } from "./project.js";
+import { PROJECTS, addProject, getAllProjectNames } from "./project.js";
+
+function createAddEditFormLine(_textContent, _id, _defaultValue) {
+        const addEditLabel = document.createElement("label");
+        addEditLabel.textContent = `${_textContent}: `;
+        
+        const addEditInput = document.createElement("input");
+        addEditInput.id = _id;
+        addEditInput.type = "text";
+        addEditInput.value = _defaultValue;
+        addEditLabel.appendChild(addEditInput);
+
+        return addEditLabel;
+    }
 
 const todoContainer = document.querySelector(".todo-container");
 const projectContainer = document.querySelector(".project-container");
@@ -23,19 +36,6 @@ const populateToDos = (function () {
         return svgIcon;
     }
 
-    function createAddEditFormLine(_textContent, _id, _defaultValue) {
-        const addEditLabel = document.createElement("label");
-        addEditLabel.textContent = `${_textContent}: `;
-        
-        const addEditInput = document.createElement("input");
-        addEditInput.id = _id;
-        addEditInput.type = "text";
-        addEditInput.value = _defaultValue;
-        addEditLabel.appendChild(addEditInput);
-
-        return addEditLabel;
-    }
-
     const createAddEditDialog = function(
         defaultTitle = "",
         defaultDescription = "",
@@ -45,9 +45,9 @@ const populateToDos = (function () {
         item = null,
         filterParam = null,
         filterValue = null) {
+
         // create new dialog with form to submit new information
         // information should be pre-populated
-        console.log(item);
         const dialogDiv = document.createElement("div");
         dialogDiv.className = "add-edit-dialog";
 
@@ -149,7 +149,7 @@ const populateToDos = (function () {
         // Close dialog on Escape key
         const escapeHandler = function(e) {
             if (e.key === "Escape") {
-                editDialog.remove();
+                dialogDiv.remove();
                 document.removeEventListener("keydown", escapeHandler);
             }
         };
@@ -229,7 +229,7 @@ const populateToDos = (function () {
                 // create new dialog with form to submit new information
                 // information should be pre-populated
                 const editDialog = createAddEditDialog(item.title, item.description, item.dueDate, item.checked, item.project, item, filterParam, filterValue)
-                todoContainer.appendChild(editDialog);
+                document.body.appendChild(editDialog);
             });
 
 
@@ -262,10 +262,88 @@ const populateToDos = (function () {
 
 const populateProjects = (function() {
 
+    const clearDisplay = function () {
+        projectContainer.replaceChildren();
+    }
+
+    const createAddDialog = function() {
+        const dialogDiv = document.createElement("div");
+        dialogDiv.className = "add-edit-dialog";
+
+        const addEditForm = document.createElement("form");
+        addEditForm.id = `add-edit-form`;
+
+        const addEditHeader = document.createElement("h4");
+        addEditHeader.textContent = "Create a new project";
+        addEditForm.appendChild(addEditHeader);
+
+        const nameLine = createAddEditFormLine("Name: ", "add-edit-name", "");
+        addEditForm.appendChild(nameLine);
+
+        const buttonDiv = document.createElement("div");
+        buttonDiv.className = "button-div";
+
+        // create submit button
+        const submitButton = document.createElement("button");
+        submitButton.textContent = "Submit";
+        submitButton.type = "submit";
+        submitButton.setAttribute("form", addEditForm.id);
+        buttonDiv.appendChild(submitButton);
+
+        addEditForm.addEventListener("submit", function(e){
+            e.preventDefault();
+
+            const nameInput = document.getElementById("add-edit-name");
+            addProject(nameInput.value);
+
+            dialogDiv.remove();
+            display();
+        });
+
+        // Create close button
+        const closeBtn = document.createElement("button");
+        closeBtn.textContent = "Close";
+        closeBtn.type = "button";
+        buttonDiv.appendChild(closeBtn);
+
+        closeBtn.addEventListener("click", function() {
+            dialogDiv.remove();
+        });
+
+        // Close dialog on Escape key
+        const escapeHandler = function(e) {
+            if (e.key === "Escape") {
+                dialogDiv.remove();
+                document.removeEventListener("keydown", escapeHandler);
+            }
+        };
+        document.addEventListener("keydown", escapeHandler);
+
+        addEditForm.append(buttonDiv);
+        dialogDiv.appendChild(addEditForm);
+
+        return dialogDiv;
+
+    }
+
     const display = function() {
+        clearDisplay();
+        const projectTitle = document.createElement("h1");
+        projectTitle.textContent = "Projects";
+        projectContainer.appendChild(projectTitle);
+
         // have an option to display all projects
         const projectDiv = document.createElement("div");
         projectDiv.className = "project-div";
+
+        const addProjectButton = document.createElement("button");
+        addProjectButton.textContent = "Create Project";
+        projectContainer.appendChild(addProjectButton);
+
+        addProjectButton.addEventListener("click", function(){
+            const addProjectDialog = createAddDialog();
+            document.body.appendChild(addProjectDialog);
+        })
 
         const radioButton = document.createElement("input");
         radioButton.type = "radio";
