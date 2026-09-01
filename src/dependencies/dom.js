@@ -34,13 +34,14 @@ const projectContainer = document.querySelector(".project-container");
 const populateToDos = (function () {
     const clearDisplay = function() {
         todoContainer.replaceChildren();
-        const todoTitle = document.createElement("h1");
-        todoTitle.textContent = "Todos";
-        todoContainer.appendChild(todoTitle);
     }
 
     const displayByFilter = function(filterParam = null, filterValue = null) {
         clearDisplay()
+        const todoTitle = document.createElement("h1");
+        todoTitle.textContent = "Todos";
+        todoContainer.appendChild(todoTitle);
+        
         let filteredToDos;
 
         if (filterParam === null) {
