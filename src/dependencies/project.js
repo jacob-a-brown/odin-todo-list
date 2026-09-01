@@ -59,7 +59,7 @@ const addProject = function(name, rgb) {
     PROJECTS.push(ProjectItem.create(name, rgb));
 }
 
-const getProject = function(name) {
+const getProjectByName = function(name) {
     return PROJECTS.find((p) => p.name === name);
 }
 
@@ -69,7 +69,7 @@ const getAllProjectNames = function() {
 }
 
 const projectExists = function(name) {
-    return getProject(name) !== undefined;
+    return getProjectByName(name) !== undefined;
 }
 
 const colorExists = function(rgb) {
@@ -80,4 +80,4 @@ const colorExists = function(rgb) {
 
 
 
-export { ProjectItem, addProject, getProject, getAllProjectNames, projectExists, colorExists, PROJECTS }
+export { ProjectItem, addProject, getProjectByName, getAllProjectNames, projectExists, colorExists, PROJECTS }

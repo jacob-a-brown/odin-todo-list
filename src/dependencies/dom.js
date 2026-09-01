@@ -1,6 +1,6 @@
 // module to manipulate the DOM
 import { TODOS, addToDo, deleteToDo } from "./todo.js";
-import { PROJECTS, addProject, getAllProjectNames, projectExists, colorExists } from "./project.js";
+import { PROJECTS, addProject, getAllProjectNames, getProjectByName, projectExists, colorExists } from "./project.js";
 
 function createAddEditFormLine(_textContent, _id, _defaultValue, _type="text") {
         const addEditLabel = document.createElement("label");
@@ -189,6 +189,18 @@ const populateToDos = (function () {
             const toDoDiv = document.createElement("div");
             toDoDiv.className = "todo-div";
             toDoDiv.id = `todo-div-${item.id}`;
+
+            const todoProjectIndicator = document.createElement("div");
+            todoProjectIndicator.className = "todo-project-indicator";
+
+            if (item.project === null){
+                todoProjectIndicator.style.backgroundColor = "white";
+            } else {
+                const correspondingProject = getProjectByName(item.project);
+                const projectRgb = correspondingProject.rgb;
+                todoProjectIndicator.style.backgroundColor = `rgba(${projectRgb[0]}, ${projectRgb[1]}, ${projectRgb[2]}, 0.4)`
+            }
+            toDoDiv.appendChild(todoProjectIndicator);
 
             const checkedButton = document.createElement("input");
             checkedButton.type = "checkbox";
@@ -400,29 +412,29 @@ const populateProjects = (function() {
         allProjectDiv.appendChild(allProjects);
         projectContainer.appendChild(allProjectDiv);
 
-        const nullProjectDiv = document.createElement("div");
-        nullProjectDiv.className = "project-div";
+        // const nullProjectDiv = document.createElement("div");
+        // nullProjectDiv.className = "project-div";
 
-        const nullRadioButton = document.createElement("input");
-        nullRadioButton.type = "radio";
-        nullRadioButton.name = "project";
-        nullRadioButton.value = "";
-        nullRadioButton.id = "radio-none";
-        nullRadioButton.checked = false;
+        // const nullRadioButton = document.createElement("input");
+        // nullRadioButton.type = "radio";
+        // nullRadioButton.name = "project";
+        // nullRadioButton.value = "";
+        // nullRadioButton.id = "radio-none";
+        // nullRadioButton.checked = false;
         
-        const nullProjects = document.createElement("label");
-        nullProjects.className = "project-item";
-        nullProjects.id = "null-projects";
-        nullProjects.textContent = "None";
-        nullProjects.htmlFor = "radio-none";
+        // const nullProjects = document.createElement("label");
+        // nullProjects.className = "project-item";
+        // nullProjects.id = "null-projects";
+        // nullProjects.textContent = "None";
+        // nullProjects.htmlFor = "radio-none";
 
-        nullRadioButton.addEventListener("change", function(event) {
-            populateToDos.displayByProject(null);
-        })
+        // nullRadioButton.addEventListener("change", function(event) {
+        //     populateToDos.displayByProject(null);
+        // })
 
-        nullProjectDiv.appendChild(nullRadioButton);
-        nullProjectDiv.appendChild(nullProjects);
-        projectContainer.appendChild(nullProjectDiv);
+        // nullProjectDiv.appendChild(nullRadioButton);
+        // nullProjectDiv.appendChild(nullProjects);
+        // projectContainer.appendChild(nullProjectDiv);
 
         // start by displaying all
         populateToDos.displayAll();
@@ -431,6 +443,7 @@ const populateProjects = (function() {
         PROJECTS.forEach(function(item) {
             const projectDiv = document.createElement("div");
             projectDiv.className = "project-div";
+            projectDiv.style.backgroundColor = `rgba(${item.rgb[0]}, ${item.rgb[1]}, ${item.rgb[2]}, 0.4)`;
 
             const radioButton = document.createElement("input");
             radioButton.type = "radio";
