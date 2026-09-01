@@ -87,10 +87,13 @@ const populateToDos = (function () {
                 // information should be pre-populated
                 const editDialog = document.createElement("div");
                 editDialog.className = "edit-dialog";
-
                 const editForm = document.createElement("form");
                 editForm.id = `edit-form-${item.id}`;
                 
+                const editHeader = document.createElement("h4");
+                editHeader.textContent = `Edit ${item.title}`;
+                editForm.appendChild(editHeader);
+
                 const titleEditLine = createEditFormLine("Title", "edit-title", item.title)
                 const descriptionEditLine = createEditFormLine("Description", "edit-description", item.description);
                 const dueDateEditLine = createEditFormLine("Due Date", "edit-due-date", item.dueDate);
@@ -130,21 +133,15 @@ const populateToDos = (function () {
                 editForm.appendChild(editCheckedLabel);
                 editForm.appendChild(projectEditLabel);
 
+                const buttonDiv = document.createElement("div");
+                buttonDiv.className = "button-div";
+
                 // create submit button
                 const submitButton = document.createElement("button");
                 submitButton.textContent = "Submit";
                 submitButton.type = "submit";
                 submitButton.setAttribute("form", editForm.id);
-                editForm.appendChild(submitButton);
-
-                // Create close button
-                const closeBtn = document.createElement("button");
-                closeBtn.textContent = "Close";
-                closeBtn.type = "button";
-                closeBtn.addEventListener("click", function() {
-                    editDialog.remove();
-                });
-                editForm.appendChild(closeBtn);
+                buttonDiv.appendChild(submitButton);
 
                 editForm.addEventListener("submit", function(e){
                     e.preventDefault();
@@ -165,6 +162,17 @@ const populateToDos = (function () {
                     displayByFilter(filterParam, filterValue);
                 })
 
+                // Create close button
+                const closeBtn = document.createElement("button");
+                closeBtn.textContent = "Close";
+                closeBtn.type = "button";
+                buttonDiv.appendChild(closeBtn);
+
+                closeBtn.addEventListener("click", function() {
+                    editDialog.remove();
+                });
+
+                editForm.append(buttonDiv);
                 editDialog.appendChild(editForm);
                 todoContainer.appendChild(editDialog);
             });
