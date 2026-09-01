@@ -83,7 +83,7 @@
     fill: grey;
 }
 
-.edit-dialog {
+.add-edit-dialog {
     position: fixed;
     top: 0;
     left: 0;
@@ -97,7 +97,7 @@
     z-index: 1000;
 }
 
-.edit-dialog form {
+.add-edit-dialog form {
     background: white;
     padding: 20px;
     border-radius: 10px;
