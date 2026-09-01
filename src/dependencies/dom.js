@@ -1,14 +1,14 @@
 // module to manipulate the DOM
 import { TODOS, addToDo, deleteToDo } from "./todo.js";
-import { PROJECTS, addProject, getAllProjectNames, projectExists } from "./project.js";
+import { PROJECTS, addProject, getAllProjectNames, projectExists, colorExists } from "./project.js";
 
-function createAddEditFormLine(_textContent, _id, _defaultValue) {
+function createAddEditFormLine(_textContent, _id, _defaultValue, _type="text") {
         const addEditLabel = document.createElement("label");
         addEditLabel.textContent = `${_textContent}: `;
         
         const addEditInput = document.createElement("input");
         addEditInput.id = _id;
-        addEditInput.type = "text";
+        addEditInput.type = _type;
         addEditInput.value = _defaultValue;
         addEditLabel.appendChild(addEditInput);
 
@@ -277,8 +277,15 @@ const populateProjects = (function() {
         addEditHeader.textContent = "Create a new project";
         addEditForm.appendChild(addEditHeader);
 
-        const nameLine = createAddEditFormLine("Name", "add-edit-name", "");
+        const nameLine = createAddEditFormLine("Name", "add-edit-name", "", "text");
+        const redLine = createAddEditFormLine("Red", "add-edit-red", "", "number");
+        const greenLine = createAddEditFormLine("Green", "add-edit-green", "", "number");
+        const blueLine = createAddEditFormLine("Blue", "add-edit-blue", "", "number");
+
         addEditForm.appendChild(nameLine);
+        addEditForm.appendChild(redLine);
+        addEditForm.appendChild(greenLine);
+        addEditForm.appendChild(blueLine);
 
         const buttonDiv = document.createElement("div");
         buttonDiv.className = "button-div";
@@ -294,15 +301,34 @@ const populateProjects = (function() {
             e.preventDefault();
 
             const nameInput = document.getElementById("add-edit-name");
+            const redInput = document.getElementById("add-edit-red");
+            const greenInput = document.getElementById("add-edit-green");
+            const blueInput = document.getElementById("add-edit-blue");
 
             if (projectExists(nameInput.value)){
                 nameInput.setCustomValidity(`Project ${nameInput.value} already exists. Choose a new name.`);
                 nameInput.reportValidity();
+            if (colorExists([redInput.value, greenInput.value, blueInput.value])){
+                redInput.setCustomValidity(`RGB [${redInput}, ${greenInput}, ${blueInput}] already exists. Choose another rgb.`)
+                greenInput.setCustomValidity(`RGB [${redInput}, ${greenInput}, ${blueInput}] already exists. Choose another rgb.`)
+                blueInput.setCustomValidity(`RGB [${redInput}, ${greenInput}, ${blueInput}] already exists. Choose another rgb.`)
+            }
             } else {
                 nameInput.setCustomValidity("");
-                addProject(nameInput.value);
-                dialogDiv.remove();
-                display();
+                redInput.setCustomValidity("");
+                greenInput.setCustomValidity("");
+                blueInput.setCustomValidity("");
+                try{
+                    addProject(nameInput.value, [Number(redInput.value), Number(greenInput.value), Number(blueInput.value)]);
+                    dialogDiv.remove();
+                    display();
+                } catch(error) {
+                    let errorMsg = document.createElement("p");
+                    errorMsg.textContent = error.message;
+                    errorMsg.style.color = "red";
+                    addEditForm.appendChild(errorMsg);
+
+                }
             }
 
             
