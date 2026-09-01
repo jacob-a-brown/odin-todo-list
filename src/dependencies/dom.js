@@ -194,7 +194,7 @@ const populateToDos = (function () {
             todoProjectIndicator.className = "todo-project-indicator";
 
             if (item.project === null){
-                todoProjectIndicator.style.backgroundColor = "white";
+                todoProjectIndicator.style.backgroundImage = "repeating-linear-gradient(45deg, white 0 4px, #ddd 4px 8px)";
             } else {
                 const correspondingProject = getProjectByName(item.project);
                 const projectRgb = correspondingProject.rgb;
