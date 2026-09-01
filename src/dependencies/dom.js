@@ -172,6 +172,15 @@ const populateToDos = (function () {
                     editDialog.remove();
                 });
 
+                // Close dialog on Escape key
+                const escapeHandler = function(e) {
+                    if (e.key === "Escape") {
+                        editDialog.remove();
+                        document.removeEventListener("keydown", escapeHandler);
+                    }
+                };
+                document.addEventListener("keydown", escapeHandler);
+
                 editForm.append(buttonDiv);
                 editDialog.appendChild(editForm);
                 todoContainer.appendChild(editDialog);
