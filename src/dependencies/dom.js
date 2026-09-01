@@ -169,7 +169,7 @@ const populateToDos = (function () {
 
         const addTodoButton = document.createElement("button");
         addTodoButton.className = "add-todo-button";
-        addTodoButton.textContent = "Add Todo";
+        addTodoButton.textContent = "Create Todo";
         todoContainer.appendChild(addTodoButton);
 
         addTodoButton.addEventListener("click", function(){
