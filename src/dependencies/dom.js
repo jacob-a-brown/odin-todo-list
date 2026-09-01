@@ -122,7 +122,7 @@ const populateToDos = (function () {
             const projectInput = document.getElementById("add-edit-project");
 
             if (item === null){
-                addToDo(titleInput, descriptionInput, dueDateInput, 0, checkedInput, projectInput);
+                addToDo(titleInput.value, descriptionInput.value, dueDateInput.value, 0, checkedInput.checked, projectInput.value === "null" ? null : projectInput.value);
             } else {
                 item.title = titleInput.value;
                 item.description = descriptionInput.value;
@@ -173,8 +173,8 @@ const populateToDos = (function () {
         todoContainer.appendChild(addTodoButton);
 
         addTodoButton.addEventListener("click", function(){
-            const addDialog = document.createElement("div");
-
+            const addDialog = createAddEditDialog("", "", "", false, "", null, filterParam, filterValue);
+            todoContainer.appendChild(addDialog);
         });
 
         let filteredToDos;
@@ -228,7 +228,6 @@ const populateToDos = (function () {
             todoEdit.addEventListener("click", function() {
                 // create new dialog with form to submit new information
                 // information should be pre-populated
-                console.log(item.title);
                 const editDialog = createAddEditDialog(item.title, item.description, item.dueDate, item.checked, item.project, item, filterParam, filterValue)
                 todoContainer.appendChild(editDialog);
             });
