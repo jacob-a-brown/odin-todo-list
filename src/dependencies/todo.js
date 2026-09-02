@@ -1,4 +1,5 @@
 import { projectExists } from "./project.js";
+import { format, isDate } from "date-fns";
 
 // temporary storage for ToDoItems
 const TODOS = []
@@ -36,11 +37,15 @@ class ToDoItem {
     }
 
     get dueDate() {
-        return this._dueDate;
+        return format(this._dueDate, "yyyy-mm-dd");
     }
 
     set dueDate(value) {
-        this._dueDate = value;
+        const formattedDueDate = new Date(value);
+        if (!isDate(formattedDueDate)){
+            throw new Error("Due date must be a Date object or an ISO-formatted string.")
+        }
+        this._dueDate = formattedDueDate;
     }
 
     get priority() {
