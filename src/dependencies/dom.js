@@ -1,5 +1,5 @@
 // module to manipulate the DOM
-import { TODOS, addToDo, deleteToDo } from "./todo.js";
+import { TODOS, addTodo, deleteTodo } from "./todo.js";
 import { PROJECTS, addProject, getAllProjectNames, getProjectByName, projectExists, colorExists } from "./project.js";
 
 function createAddEditFormLine(_textContent, _id, _defaultValue, _type="text") {
@@ -18,7 +18,7 @@ function createAddEditFormLine(_textContent, _id, _defaultValue, _type="text") {
 const todoContainer = document.querySelector(".todo-container");
 const projectContainer = document.querySelector(".project-container");
 
-const populateToDos = (function () {
+const populateTodos = (function () {
     const clearDisplay = function() {
         todoContainer.replaceChildren();
     }
@@ -124,7 +124,7 @@ const populateToDos = (function () {
             console.log(dueDateInput.value);
 
             if (item === null){
-                addToDo(titleInput.value, descriptionInput.value, dueDateInput.value, 0, checkedInput.checked, projectInput.value === "null" ? null : projectInput.value);
+                addTodo(titleInput.value, descriptionInput.value, dueDateInput.value, 0, checkedInput.checked, projectInput.value === "null" ? null : projectInput.value);
             } else {
                 item.title = titleInput.value;
                 item.description = descriptionInput.value;
@@ -178,15 +178,15 @@ const populateToDos = (function () {
             todoContainer.appendChild(addDialog);
         });
 
-        let filteredToDos;
+        let filteredTodos;
 
         if (filterParam === "all") {
-            filteredToDos = TODOS;
+            filteredTodos = TODOS;
         } else if (filterParam === "project"){
-            filteredToDos = TODOS.filter((elem) => elem.project === filterValue);
+            filteredTodos = TODOS.filter((elem) => elem.project === filterValue);
         }
 
-        filteredToDos.forEach((item) => {
+        filteredTodos.forEach((item) => {
             const todoDiv = document.createElement("div");
             todoDiv.className = "todo-div";
             todoDiv.id = `todo-div-${item.id}`;
@@ -247,7 +247,7 @@ const populateToDos = (function () {
 
 
             todoDelete.addEventListener("click", function() {
-                deleteToDo(item.id);
+                deleteTodo(item.id);
                 displayByFilter(filterParam, filterValue);
             });
 
@@ -429,7 +429,7 @@ const populateProjects = (function() {
         allProjects.htmlFor = "radio-all";
 
         allRadioButton.addEventListener("change", function(event) {
-            populateToDos.displayAll();
+            populateTodos.displayAll();
         })
 
         allProjectDiv.appendChild(allRadioButton);
@@ -453,7 +453,7 @@ const populateProjects = (function() {
         // nullProjects.htmlFor = "radio-none";
 
         // nullRadioButton.addEventListener("change", function(event) {
-        //     populateToDos.displayByProject(null);
+        //     populateTodos.displayByProject(null);
         // })
 
         // nullProjectDiv.appendChild(nullRadioButton);
@@ -461,7 +461,7 @@ const populateProjects = (function() {
         // projectContainer.appendChild(nullProjectDiv);
 
         // start by displaying all
-        populateToDos.displayAll();
+        populateTodos.displayAll();
 
         // show each project
         PROJECTS.forEach(function(item) {
@@ -481,7 +481,7 @@ const populateProjects = (function() {
             projectNode.htmlFor = item.id;
 
             radioButton.addEventListener("change", function(event) {
-                populateToDos.displayByProject(event.target.value);
+                populateTodos.displayByProject(event.target.value);
             })
 
             projectDiv.appendChild(radioButton);
@@ -496,4 +496,4 @@ const populateProjects = (function() {
 
 })();
 
-export { populateToDos, populateProjects }
+export { populateTodos, populateProjects }

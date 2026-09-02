@@ -1,10 +1,10 @@
 import { projectExists } from "./project.js";
 import { format, isDate, parse, isValid } from "date-fns";
 
-// temporary storage for ToDoItems
+// temporary storage for TodoItems
 const TODOS = []
 
-class ToDoItem {
+class TodoItem {
     constructor(title, description, dueDate, priority, checked = false, project = null) {
         this._id = crypto.randomUUID();
         this.title = title;
@@ -90,22 +90,22 @@ class ToDoItem {
     }
 }
 
-const addToDo = function(title, description, dueDate, priority, checked = false, project = null) {
-    TODOS.push(ToDoItem.create(title, description, dueDate, priority, checked, project));
+const addTodo = function(title, description, dueDate, priority, checked = false, project = null) {
+    TODOS.push(TodoItem.create(title, description, dueDate, priority, checked, project));
 }
 
-const deleteToDo = function(id) {
+const deleteTodo = function(id) {
     const todoInd = TODOS.findIndex((td) => td.id === id);
     TODOS.splice(todoInd, 1);
 }
 
-const getToDo = function(id) {
+const getTodo = function(id) {
     return TODOS.find((td) => td.id === id);
 }
 
-const getToDoItemsByProject = function(name) {
+const getTodoItemsByProject = function(name) {
     const todoItemsByProject = TODOS.filter((td) => td.project === name);
     return todoItemsByProject;
 }
 
-export { ToDoItem, addToDo, deleteToDo, getToDo, getToDoItemsByProject, TODOS }
+export { TodoItem, addTodo, deleteTodo, getTodo, getTodoItemsByProject, TODOS }
