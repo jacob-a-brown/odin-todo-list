@@ -187,9 +187,9 @@ const populateToDos = (function () {
         }
 
         filteredToDos.forEach((item) => {
-            const toDoDiv = document.createElement("div");
-            toDoDiv.className = "todo-div";
-            toDoDiv.id = `todo-div-${item.id}`;
+            const todoDiv = document.createElement("div");
+            todoDiv.className = "todo-div";
+            todoDiv.id = `todo-div-${item.id}`;
 
             const todoProjectIndicator = document.createElement("div");
             todoProjectIndicator.className = "todo-project-indicator";
@@ -201,7 +201,7 @@ const populateToDos = (function () {
                 const projectRgb = correspondingProject.rgb;
                 todoProjectIndicator.style.backgroundColor = `rgba(${projectRgb[0]}, ${projectRgb[1]}, ${projectRgb[2]}, 0.4)`
             }
-            toDoDiv.appendChild(todoProjectIndicator);
+            todoDiv.appendChild(todoProjectIndicator);
 
             const checkedButton = document.createElement("input");
             checkedButton.type = "checkbox";
@@ -251,11 +251,11 @@ const populateToDos = (function () {
                 displayByFilter(filterParam, filterValue);
             });
 
-            toDoDiv.appendChild(checkedButton);
-            toDoDiv.appendChild(todoTextDiv);
-            toDoDiv.appendChild(todoEdit);
-            toDoDiv.appendChild(todoDelete);
-            todoContainer.appendChild(toDoDiv);
+            todoDiv.appendChild(checkedButton);
+            todoDiv.appendChild(todoTextDiv);
+            todoDiv.appendChild(todoEdit);
+            todoDiv.appendChild(todoDelete);
+            todoContainer.appendChild(todoDiv);
         })    
     }
     

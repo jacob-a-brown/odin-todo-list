@@ -95,8 +95,8 @@ const addToDo = function(title, description, dueDate, priority, checked = false,
 }
 
 const deleteToDo = function(id) {
-    const toDoInd = TODOS.findIndex((td) => td.id === id);
-    TODOS.splice(toDoInd, 1);
+    const todoInd = TODOS.findIndex((td) => td.id === id);
+    TODOS.splice(todoInd, 1);
 }
 
 const getToDo = function(id) {
@@ -104,8 +104,8 @@ const getToDo = function(id) {
 }
 
 const getToDoItemsByProject = function(name) {
-    const toDoItemsByProject = TODOS.filter((td) => td.project === name);
-    return toDoItemsByProject;
+    const todoItemsByProject = TODOS.filter((td) => td.project === name);
+    return todoItemsByProject;
 }
 
 export { ToDoItem, addToDo, deleteToDo, getToDo, getToDoItemsByProject, TODOS }
