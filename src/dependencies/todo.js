@@ -1,5 +1,5 @@
 import { projectExists } from "./project.js";
-import { format, isDate } from "date-fns";
+import { format, isDate, parse, isValid } from "date-fns";
 
 // temporary storage for ToDoItems
 const TODOS = []
@@ -37,13 +37,14 @@ class ToDoItem {
     }
 
     get dueDate() {
-        return format(this._dueDate, "yyyy-mm-dd");
+        return format(this._dueDate, "yyyy-MM-dd");
     }
 
     set dueDate(value) {
-        const formattedDueDate = new Date(value);
-        if (!isDate(formattedDueDate)){
-            throw new Error("Due date must be a Date object or an ISO-formatted string.")
+        // parse as local calendar date instead of new Date(), which treats "yyyy-MM-dd" as UTC
+        const formattedDueDate = isDate(value) ? value : parse(value, "yyyy-MM-dd", new Date());
+        if (!isValid(formattedDueDate)){
+            throw new Error("Due date must be a Date object or a yyyy-MM-dd formatted string.")
         }
         this._dueDate = formattedDueDate;
     }

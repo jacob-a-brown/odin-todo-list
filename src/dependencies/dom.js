@@ -65,7 +65,7 @@ const populateToDos = (function () {
 
         const titleLine = createAddEditFormLine("Title", "add-edit-title", defaultTitle)
         const descriptionLine = createAddEditFormLine("Description", "add-edit-description", defaultDescription);
-        const dueDateLine = createAddEditFormLine("Due Date", "add-edit-due-date", defaultDueDate);
+        const dueDateLine = createAddEditFormLine("Due Date", "add-edit-due-date", defaultDueDate, "date");
         
         const addEditCheckedLabel = document.createElement("label");
         addEditCheckedLabel.textContent = "Done: ";
@@ -121,6 +121,8 @@ const populateToDos = (function () {
             const checkedInput = document.getElementById("add-edit-checked");
             const projectInput = document.getElementById("add-edit-project");
 
+            console.log(dueDateInput.value);
+
             if (item === null){
                 addToDo(titleInput.value, descriptionInput.value, dueDateInput.value, 0, checkedInput.checked, projectInput.value === "null" ? null : projectInput.value);
             } else {
@@ -131,7 +133,6 @@ const populateToDos = (function () {
                 item.project = projectInput.value === "null" ? null : projectInput.value;
             }
             
-
             dialogDiv.remove();
             displayByFilter(filterParam, filterValue);
         })
