@@ -282,22 +282,43 @@ const populateProjects = (function() {
         const dialogDiv = document.createElement("div");
         dialogDiv.className = "add-edit-dialog";
 
+        // unique per-dialog suffix avoids id collisions with any dialog left in the DOM
+        const uniqueSuffix = crypto.randomUUID();
+
         const addEditForm = document.createElement("form");
-        addEditForm.id = `add-edit-form`;
+        addEditForm.id = `add-edit-form-${uniqueSuffix}`;
 
         const addEditHeader = document.createElement("h4");
         addEditHeader.textContent = "Create a new project";
         addEditForm.appendChild(addEditHeader);
 
-        const nameLine = createAddEditFormLine("Name", "add-edit-name", "", "text");
-        const redLine = createAddEditFormLine("Red", "add-edit-red", "", "number");
-        const greenLine = createAddEditFormLine("Green", "add-edit-green", "", "number");
-        const blueLine = createAddEditFormLine("Blue", "add-edit-blue", "", "number");
+        const nameLine = createAddEditFormLine("Name", `add-edit-name-${uniqueSuffix}`, "", "text");
+        const redLine = createAddEditFormLine("Red", `add-edit-red-${uniqueSuffix}`, "", "number");
+        const greenLine = createAddEditFormLine("Green", `add-edit-green-${uniqueSuffix}`, "", "number");
+        const blueLine = createAddEditFormLine("Blue", `add-edit-blue-${uniqueSuffix}`, "", "number");
 
         addEditForm.appendChild(nameLine);
         addEditForm.appendChild(redLine);
         addEditForm.appendChild(greenLine);
         addEditForm.appendChild(blueLine);
+
+        const nameInput = nameLine.querySelector("input");
+        const redInput = redLine.querySelector("input");
+        const greenInput = greenLine.querySelector("input");
+        const blueInput = blueLine.querySelector("input");
+
+        // custom validity messages persist until cleared, so reset them as the user edits
+        [redInput, greenInput, blueInput].forEach((item) => {
+            item.addEventListener("input", function() {
+                redInput.setCustomValidity("");
+                greenInput.setCustomValidity("");
+                blueInput.setCustomValidity("");
+            });
+        });
+
+        nameInput.addEventListener("input", () => {
+            nameInput.setCustomValidity("");
+        })
 
         const buttonDiv = document.createElement("div");
         buttonDiv.className = "button-div";
@@ -312,26 +333,28 @@ const populateProjects = (function() {
         addEditForm.addEventListener("submit", function(e){
             e.preventDefault();
 
-            const nameInput = document.getElementById("add-edit-name");
-            const redInput = document.getElementById("add-edit-red");
-            const greenInput = document.getElementById("add-edit-green");
-            const blueInput = document.getElementById("add-edit-blue");
+            const redInputValue = Number(redInput.value);
+            const greenInputValue = Number(greenInput.value);
+            const blueInputValue = Number(blueInput.value);
+
+            console.log(redInputValue, greenInputValue, blueInputValue);
 
             if (projectExists(nameInput.value)){
                 nameInput.setCustomValidity(`Project ${nameInput.value} already exists. Choose a new name.`);
                 nameInput.reportValidity();
-            if (colorExists([redInput.value, greenInput.value, blueInput.value])){
-                redInput.setCustomValidity(`RGB [${redInput}, ${greenInput}, ${blueInput}] already exists. Choose another rgb.`)
-                greenInput.setCustomValidity(`RGB [${redInput}, ${greenInput}, ${blueInput}] already exists. Choose another rgb.`)
-                blueInput.setCustomValidity(`RGB [${redInput}, ${greenInput}, ${blueInput}] already exists. Choose another rgb.`)
-            }
+            } else if (colorExists([redInputValue, greenInputValue, blueInputValue])){
+                const message = `RGB [${redInputValue}, ${greenInputValue}, ${blueInputValue}] already exists. Choose another rgb.`;
+                redInput.setCustomValidity(message);
+                greenInput.setCustomValidity(message);
+                blueInput.setCustomValidity(message);
+                redInput.reportValidity();
             } else {
                 nameInput.setCustomValidity("");
                 redInput.setCustomValidity("");
                 greenInput.setCustomValidity("");
                 blueInput.setCustomValidity("");
                 try{
-                    addProject(nameInput.value, [Number(redInput.value), Number(greenInput.value), Number(blueInput.value)]);
+                    addProject(nameInput.value, [redInputValue, greenInputValue, blueInputValue]);
                     dialogDiv.remove();
                     display();
                 } catch(error) {
