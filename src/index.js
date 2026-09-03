@@ -13,8 +13,13 @@ if (localStorage.getItem("projects")){
     project.addProject("Project 2", [58, 66, 205]);
 }
 
-todo.addTodo("title 0", "description 0", "2000-01-01", 0, false, null);
-todo.addTodo("title 1", "description 1", "2001-01-01", 1, true, "Project 1");
-todo.addTodo("title 2", "description 2", "2002-01-01", 2, true, "Project 2");
+if (localStorage.getItem("todos")){
+    todo.loadTodosFromLocalStorage();
+} else {
+    todo.addTodo("title 0", "description 0", "2000-01-01", 0, false, null);
+    todo.addTodo("title 1", "description 1", "2001-01-01", 1, true, "Project 1");
+    todo.addTodo("title 2", "description 2", "2002-01-01", 2, true, "Project 2");
+}
+
 
 dom.populateProjects.display();

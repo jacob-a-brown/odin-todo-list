@@ -54,7 +54,7 @@ class ProjectItem {
         return new this(name, rgb);
     }
 
-    static createFromStorage(id, name, rgb){
+    static createFromStorage({id, name, rgb}){
         const project = new this(name, rgb);
         project._id = id;
         return project;
@@ -64,7 +64,7 @@ class ProjectItem {
 const loadProjectsFromLocalStorage = function () {
     const storedProjects = localStorage.getItem("projects");
     const projects = storedProjects ? JSON.parse(storedProjects) : [];
-    projects.forEach((item) => PROJECTS.push(ProjectItem.createFromStorage(item.id, item.name, item.rgb)));
+    projects.forEach((item) => PROJECTS.push(ProjectItem.createFromStorage(item)));
     return projects;
 }
 

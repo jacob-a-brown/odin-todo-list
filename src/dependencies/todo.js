@@ -85,18 +85,59 @@ class TodoItem {
     }
 
     // STATIC METHODS
-    static create(title, description, dueDate, priority, checked = false, project = null) {
+    static createNew(title, description, dueDate, priority, checked = false, project = null) {
         return new this(title, description, dueDate, priority, checked, project);
+    }
+
+    static createFromStorage({id, title, description, dueDate, priority, checked = false, project = null}){
+        const todo = new this(title, description, dueDate, priority, checked, project);
+        todo._id = id;
+        return todo;
     }
 }
 
+const loadTodosFromLocalStorage = function() {
+    const storedTodos = localStorage.getItem("todos");
+    const todos = storedTodos ? JSON.parse(storedTodos) : [];
+    todos.forEach((item) => TODOS.push(TodoItem.createFromStorage(item)));
+    return todos;
+}
+
+const saveTodosToStorage = function() {
+    // saves todos in localStorage. To be called after TODOS is edited
+    localStorage.setItem(
+        "todos",
+        JSON.stringify(TODOS.map((todo) => ({
+            id: todo.id,
+            title: todo.title,
+            description: todo.description,
+            dueDate: todo.dueDate,
+            priority: todo.priority,
+            checked: todo.checked,
+            project: todo.project
+        })))
+    );
+}
+
 const addTodo = function(title, description, dueDate, priority, checked = false, project = null) {
-    TODOS.push(TodoItem.create(title, description, dueDate, priority, checked, project));
+    TODOS.push(TodoItem.createNew(title, description, dueDate, priority, checked, project));
+    saveTodosToStorage();
 }
 
 const deleteTodo = function(id) {
     const todoInd = TODOS.findIndex((td) => td.id === id);
     TODOS.splice(todoInd, 1);
+    saveTodosToStorage();
+}
+
+const editTodo = function(id, title, description, dueDate, checked, project){
+    const todoInd = TODOS.findIndex((td) => td.id === id);
+    TODOS[todoInd].title = title;
+    TODOS[todoInd].description = description;
+    TODOS[todoInd].dueDate = dueDate;
+    TODOS[todoInd].checked = checked;
+    TODOS[todoInd].project = project;
+    saveTodosToStorage();
 }
 
 const getTodo = function(id) {
@@ -108,4 +149,4 @@ const getTodoItemsByProject = function(name) {
     return todoItemsByProject;
 }
 
-export { TodoItem, addTodo, deleteTodo, getTodo, getTodoItemsByProject, TODOS }
+export { TodoItem, loadTodosFromLocalStorage, addTodo, deleteTodo, editTodo, getTodo, getTodoItemsByProject, TODOS }

@@ -1,5 +1,5 @@
 // module to manipulate the DOM
-import { TODOS, addTodo, deleteTodo } from "./todo.js";
+import { TODOS, addTodo, deleteTodo, editTodo } from "./todo.js";
 import { PROJECTS, saveProjectsToStorage, addProject, getAllProjectNames, getProjectByName, projectExists, colorExists } from "./project.js";
 
 function createAddEditFormLine(
@@ -138,11 +138,14 @@ const populateTodos = (function () {
             if (item === null){
                 addTodo(titleInput.value, descriptionInput.value, dueDateInput.value, 0, checkedInput.checked, projectInput.value === "null" ? null : projectInput.value);
             } else {
-                item.title = titleInput.value;
-                item.description = descriptionInput.value;
-                item.dueDate = dueDateInput.value;
-                item.checked = checkedInput.checked;
-                item.project = projectInput.value === "null" ? null : projectInput.value;
+                editTodo(
+                    item.id,
+                    titleInput.value,
+                    descriptionInput.value,
+                    dueDateInput.value,
+                    checkedInput.checked,
+                    projectInput.value === "null" ? null : projectInput.value
+                )
             }
             
             dialogDiv.remove();
