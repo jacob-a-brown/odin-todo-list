@@ -50,22 +50,22 @@ class ProjectItem {
     }
 
     // STATIC METHODS
-    static create(name, rgb){
+    static createNew(name, rgb){
         return new this(name, rgb);
+    }
+
+    static createFromStorage(id, name, rgb){
+        const project = new this(name, rgb);
+        project._id = id;
+        return project;
     }
 }
 
 const loadProjectsFromLocalStorage = function () {
     const storedProjects = localStorage.getItem("projects");
     const projects = storedProjects ? JSON.parse(storedProjects) : [];
-    projects.forEach((item) => PROJECTS.push(item));
+    projects.forEach((item) => PROJECTS.push(ProjectItem.createFromStorage(item.id, item.name, item.rgb)));
     return projects;
-}
-
-const addProject = function(name, rgb) {
-    // adds a new ProjectItem to both the loaded array and localStorage
-    const newProject = ProjectItem.create(name, rgb);
-    PROJECTS.push(newProject);
 }
 
 const saveProjectsToStorage = function() {
@@ -78,6 +78,12 @@ const saveProjectsToStorage = function() {
             rgb: project.rgb,
         })))
     );
+}
+
+const addProject = function(name, rgb) {
+    const newProject = ProjectItem.createNew(name, rgb);
+    PROJECTS.push(newProject);
+    saveProjectsToStorage();
 }
 
 const getProjectByName = function(name) {

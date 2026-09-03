@@ -100,6 +100,12 @@ const populateTodos = (function () {
             option.text = p;
             projectAddEditSelect.appendChild(option);
         })
+
+        if (item.project === null){
+            projectAddEditSelect.value = "null";
+        } else {
+            projectAddEditSelect.value = item.project;
+        }
         projectAddEditLabel.appendChild(projectAddEditSelect);
 
         addEditForm.appendChild(titleLine);
@@ -363,7 +369,6 @@ const populateProjects = (function() {
                 try{
                     addProject(nameInput.value, [redInputValue, greenInputValue, blueInputValue]);
                     dialogDiv.remove();
-                    saveProjectsToStorage();
                     display();
                 } catch(error) {
                     let errorMsg = document.createElement("p");
