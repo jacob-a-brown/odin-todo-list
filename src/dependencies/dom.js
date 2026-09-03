@@ -2,7 +2,12 @@
 import { TODOS, addTodo, deleteTodo } from "./todo.js";
 import { PROJECTS, addProject, getAllProjectNames, getProjectByName, projectExists, colorExists } from "./project.js";
 
-function createAddEditFormLine(_textContent, _id, _defaultValue, _type="text") {
+function createAddEditFormLine(
+    _textContent,
+    _id,
+    _defaultValue,
+    _type="text",
+    _require=false) {
         const addEditLabel = document.createElement("label");
         addEditLabel.textContent = `${_textContent}: `;
         
@@ -10,6 +15,7 @@ function createAddEditFormLine(_textContent, _id, _defaultValue, _type="text") {
         addEditInput.id = _id;
         addEditInput.type = _type;
         addEditInput.value = _defaultValue;
+        addEditInput.required = _require;
         addEditLabel.appendChild(addEditInput);
 
         return addEditLabel;
@@ -63,9 +69,9 @@ const populateTodos = (function () {
         }
         addEditForm.appendChild(addEditHeader);
 
-        const titleLine = createAddEditFormLine("Title", "add-edit-title", defaultTitle)
-        const descriptionLine = createAddEditFormLine("Description", "add-edit-description", defaultDescription);
-        const dueDateLine = createAddEditFormLine("Due Date", "add-edit-due-date", defaultDueDate, "date");
+        const titleLine = createAddEditFormLine("Title", "add-edit-title", defaultTitle, "text", true);
+        const descriptionLine = createAddEditFormLine("Description", "add-edit-description", defaultDescription, "text", true);
+        const dueDateLine = createAddEditFormLine("Due Date", "add-edit-due-date", defaultDueDate, "date", true);
         
         const addEditCheckedLabel = document.createElement("label");
         addEditCheckedLabel.textContent = "Done: ";
@@ -293,10 +299,10 @@ const populateProjects = (function() {
         addEditHeader.textContent = "Create a new project";
         addEditForm.appendChild(addEditHeader);
 
-        const nameLine = createAddEditFormLine("Name", `add-edit-name-${uniqueSuffix}`, "", "text");
-        const redLine = createAddEditFormLine("Red", `add-edit-red-${uniqueSuffix}`, "", "number");
-        const greenLine = createAddEditFormLine("Green", `add-edit-green-${uniqueSuffix}`, "", "number");
-        const blueLine = createAddEditFormLine("Blue", `add-edit-blue-${uniqueSuffix}`, "", "number");
+        const nameLine = createAddEditFormLine("Name", `add-edit-name-${uniqueSuffix}`, "", "text", true);
+        const redLine = createAddEditFormLine("Red", `add-edit-red-${uniqueSuffix}`, "", "number", true);
+        const greenLine = createAddEditFormLine("Green", `add-edit-green-${uniqueSuffix}`, "", "number", true);
+        const blueLine = createAddEditFormLine("Blue", `add-edit-blue-${uniqueSuffix}`, "", "number", true);
 
         addEditForm.appendChild(nameLine);
         addEditForm.appendChild(redLine);
