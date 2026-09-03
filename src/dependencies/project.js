@@ -64,6 +64,10 @@ class ProjectItem {
 const loadProjectsFromLocalStorage = function () {
     const storedProjects = localStorage.getItem("projects");
     const projects = storedProjects ? JSON.parse(storedProjects) : [];
+
+    // reset PROJECTS when loading
+    PROJECTS.length = 0;
+
     projects.forEach((item) => PROJECTS.push(ProjectItem.createFromStorage(item)));
     return projects;
 }

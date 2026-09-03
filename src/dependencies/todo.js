@@ -99,6 +99,10 @@ class TodoItem {
 const loadTodosFromLocalStorage = function() {
     const storedTodos = localStorage.getItem("todos");
     const todos = storedTodos ? JSON.parse(storedTodos) : [];
+
+    // reset TODOS when loading to prevent doubles
+    TODOS.length = 0;
+
     todos.forEach((item) => TODOS.push(TodoItem.createFromStorage(item)));
     return todos;
 }
