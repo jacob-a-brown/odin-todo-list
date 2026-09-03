@@ -101,10 +101,12 @@ const populateTodos = (function () {
             projectAddEditSelect.appendChild(option);
         })
 
-        if (item.project === null){
-            projectAddEditSelect.value = "null";
-        } else {
-            projectAddEditSelect.value = item.project;
+        if (item !== null){
+            if (item.project === null){
+                projectAddEditSelect.value = "null";
+            } else {
+                projectAddEditSelect.value = item.project;
+            }
         }
         projectAddEditLabel.appendChild(projectAddEditSelect);
 
