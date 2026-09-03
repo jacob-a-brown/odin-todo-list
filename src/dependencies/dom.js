@@ -1,6 +1,6 @@
 // module to manipulate the DOM
 import { TODOS, addTodo, deleteTodo } from "./todo.js";
-import { PROJECTS, addProject, getAllProjectNames, getProjectByName, projectExists, colorExists } from "./project.js";
+import { PROJECTS, saveProjectsToStorage, addProject, getAllProjectNames, getProjectByName, projectExists, colorExists } from "./project.js";
 
 function createAddEditFormLine(
     _textContent,
@@ -363,6 +363,7 @@ const populateProjects = (function() {
                 try{
                     addProject(nameInput.value, [redInputValue, greenInputValue, blueInputValue]);
                     dialogDiv.remove();
+                    saveProjectsToStorage();
                     display();
                 } catch(error) {
                     let errorMsg = document.createElement("p");
@@ -441,30 +442,6 @@ const populateProjects = (function() {
         allProjectDiv.appendChild(allRadioButton);
         allProjectDiv.appendChild(allProjects);
         projectContainer.appendChild(allProjectDiv);
-
-        // const nullProjectDiv = document.createElement("div");
-        // nullProjectDiv.className = "project-div";
-
-        // const nullRadioButton = document.createElement("input");
-        // nullRadioButton.type = "radio";
-        // nullRadioButton.name = "project";
-        // nullRadioButton.value = "";
-        // nullRadioButton.id = "radio-none";
-        // nullRadioButton.checked = false;
-        
-        // const nullProjects = document.createElement("label");
-        // nullProjects.className = "project-item";
-        // nullProjects.id = "null-projects";
-        // nullProjects.textContent = "None";
-        // nullProjects.htmlFor = "radio-none";
-
-        // nullRadioButton.addEventListener("change", function(event) {
-        //     populateTodos.displayByProject(null);
-        // })
-
-        // nullProjectDiv.appendChild(nullRadioButton);
-        // nullProjectDiv.appendChild(nullProjects);
-        // projectContainer.appendChild(nullProjectDiv);
 
         // start by displaying all
         populateTodos.displayAll();

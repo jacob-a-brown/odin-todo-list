@@ -55,8 +55,29 @@ class ProjectItem {
     }
 }
 
+const loadProjectsFromLocalStorage = function () {
+    const storedProjects = localStorage.getItem("projects");
+    const projects = storedProjects ? JSON.parse(storedProjects) : [];
+    projects.forEach((item) => PROJECTS.push(item));
+    return projects;
+}
+
 const addProject = function(name, rgb) {
-    PROJECTS.push(ProjectItem.create(name, rgb));
+    // adds a new ProjectItem to both the loaded array and localStorage
+    const newProject = ProjectItem.create(name, rgb);
+    PROJECTS.push(newProject);
+}
+
+const saveProjectsToStorage = function() {
+    // saves projects in localStorage. To be called after projects are edited
+    localStorage.setItem(
+        "projects",
+        JSON.stringify(PROJECTS.map((project) => ({
+            id: project.id,
+            name: project.name,
+            rgb: project.rgb,
+        })))
+    );
 }
 
 const getProjectByName = function(name) {
@@ -79,5 +100,4 @@ const colorExists = function(rgb) {
 }
 
 
-
-export { ProjectItem, addProject, getProjectByName, getAllProjectNames, projectExists, colorExists, PROJECTS }
+export { ProjectItem, loadProjectsFromLocalStorage, addProject, saveProjectsToStorage, getProjectByName, getAllProjectNames, projectExists, colorExists, PROJECTS }
